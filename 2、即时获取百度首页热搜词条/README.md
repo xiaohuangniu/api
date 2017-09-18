@@ -1,4 +1,4 @@
-基于PHP5.4 开发的抓取搜索引擎收录量DEMO
+基于PHP5.4 即时获取百度首页热搜词条 DEMO
 ===============================================
 小黄牛
 -----------------------------------------------
@@ -14,10 +14,6 @@
 
 + 邮箱 - 1731223728@qq.com                                                                                                                    
 
-+ 当前版本暂时只支持抓取百度、360、搜狗三家搜索引擎的收录量
-
-
-
 
 ## 使用DEMO如下：
 
@@ -26,20 +22,20 @@
 require 'vendor/Api.php';
 
 // 使用DEMO
-$obj = new Included();
-$num = $obj->Obtain('sougou', 'www.junphp.com');
+$obj = new Hotsearch();
+$num = $obj->Obtain();
 echo '<pre>';
 var_dump( $num );
 ````
 
 
-### $this->Obtain()的参数说明：
+### $this->Obtain()的回调参数说明：
 
 
 ``` 
-$obj->Obtain(类型, 网址);
-类型主要有以下三个：
-baidu
-360
-sougou
+[
+    'title' => 词条名
+    'num'   => 指数
+    'sort'  => 近期排名升降：1|2 升|降
+]
 ```
