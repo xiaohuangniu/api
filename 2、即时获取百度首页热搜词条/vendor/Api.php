@@ -43,9 +43,9 @@ class Hotsearch{
                     $res[$k-1]['sort'] = '1'; // 升
                 }
             }
-            return $this->Return('00', '成功', $res); 
+            return $this->returnEcho('00', '成功', $res); 
         }
-        return $this->Return('01', '失败'); 
+        return $this->returnEcho('01', '失败'); 
      }
 
      /**
@@ -54,7 +54,7 @@ class Hotsearch{
       * @param mixed  $msg  返回说明
       * @param mixed  $data 返回内容
       */
-     protected function Return($code , $msg, $data=''){
+     protected function returnEcho($code , $msg, $data=''){
         return [
             'code' => "'{$code}'",
             'msg'  => $msg,

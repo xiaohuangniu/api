@@ -20,8 +20,8 @@ class Included{
       * @return array 查询结果
       */
      public function Obtain($type='', $url=''){
-        if (empty($type)) return $this->Return('01', '查询类型不允许为空');
-        if (empty($type)) return $this->Return('02', '查询网址不允许为空');
+        if (empty($type)) return $this->returnEcho('01', '查询类型不允许为空');
+        if (empty($type)) return $this->returnEcho('02', '查询网址不允许为空');
 
         $this->url = $url;
 
@@ -29,7 +29,7 @@ class Included{
             case 'baidu' : return $this->baidu();  break;  
             case '360'   : return $this->so();     break;
             case 'sougou': return $this->sougou(); break;
-            default: return $this->Return('03', '暂无该查询类型');
+            default: return $this->returnEcho('03', '暂无该查询类型');
         }
 
      }
@@ -40,7 +40,7 @@ class Included{
       * @param mixed  $msg  返回说明
       * @param mixed  $data 返回内容
       */
-     protected function Return($code , $msg, $data=''){
+     protected function returnEcho($code , $msg, $data=''){
         return [
             'code' => "'{$code}'",
             'msg'  => $msg,
@@ -60,9 +60,9 @@ class Included{
         if (count($data) > 1) {
             $array    = explode('</b></p>', $data[1]);
             $num      = str_replace('个', '', str_replace('找到相关结果数约', '', $array[0]));
-            return $this->Return('00', '成功', $num);
+            return $this->returnEcho('00', '成功', $num);
         }
-        return $this->Return('00', '成功', 0);
+        return $this->returnEcho('00', '成功', 0);
     }
 
     /**
@@ -75,9 +75,9 @@ class Included{
         $data     = explode('找到相关结果约', $content);
         if (count($data) > 1) {
             $array = explode('个</span>', $data[1]);
-            return $this->Return('00', '成功', $array[0]);
+            return $this->returnEcho('00', '成功', $array[0]);
         }
-        return $this->Return('00', '成功', 0);
+        return $this->returnEcho('00', '成功', 0);
     }
 
     /**
@@ -90,9 +90,9 @@ class Included{
         $data     = explode('<p class="sr-num">找到约', $content);
         if (count($data) > 1) {
             $array = explode('条结果</p>', $data[1]);
-            return $this->Return('00', '成功', $array[0]);
+            return $this->returnEcho('00', '成功', $array[0]);
         }
-        return $this->Return('00', '成功', 0);
+        return $this->returnEcho('00', '成功', 0);
     }
 
 
