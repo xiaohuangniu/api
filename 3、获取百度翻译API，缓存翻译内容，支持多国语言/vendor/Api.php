@@ -43,7 +43,7 @@ class Fanyi{
             $res = file_get_contents($file_path . 'fanyi.cache');
         }
 
-        return $res;
+        return return $this->returnEcho('00', '成功', $res);
      }
 
      /**

@@ -1,7 +1,7 @@
 <?php
 /*
  +----------------------------------------------------------------------
- + Title        : 接口核心类 - 即时获取天气预报信息
+ + Title        : 接口核心类 - 查询手机归属地
  + Author       : 小黄牛
  + Version      : V1.0.0.1
  + Initial-Time : 2017-9-20
@@ -10,21 +10,32 @@
  +----------------------------------------------------------------------
 */
 
-class Weather{
+class Phone_ownership{
      /**
-      * 获取天气预报
-      * @param string $city 地区名称（市）
-      * @param int    $type 时间
+      * 执行查询
+      * @param int $phone 手机号
       * @return array 查询结果
       */
-     public function Obtain($city='', $type = 0){
-        if (empty($city))           return $this->returnEcho('01', '查询城市不允许为空');
-        if ($type > 5 || $type < 0) return $this->returnEcho('02', '查询日期最多只能为0-4');
+     public function Obtain($phone=''){
+        if (empty($phone))           return $this->returnEcho('01', '手机号不允许为空');
 
-        $url   = 'http://php.weather.sina.com.cn/xml.php?city='.urlencode(iconv('utf-8', 'gb2312', $city)).'&password=DJOYnieT8234jlsK&day='.$type;
-        $json  =  json_encode(simplexml_load_string($this->https_request($url)));
-        $array = json_decode($json, true);
-        return return $this->returnEcho('00', '成功', $array['Weather']);
+        $url  = 'https://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel='.$phone;
+        $res  = iconv("GB2312","UTF-8", $this->https_request($url));
+        $json = str_replace("__GetZoneResult_ = {", '', $res);
+        $json = str_replace('	', '', $json);
+        $json = str_replace(' ', '', $json);
+        $json = str_replace('}', '', $json);
+        $json = str_replace('
+', '', $json);
+        $json = explode(',', $json);
+        $array = [];
+        foreach ($json as $k => $v) {
+            $arr = explode(':', $v);
+            $key = $arr[0];
+            $array[$key] = ltrim(rtrim($arr[1], "'"), "'");
+        }
+        if (empty($array['carrier'])) return $this->returnEcho('02', '手机号错误');
+        return  $this->returnEcho('00', '成功', $array);
      }
 
      /**
